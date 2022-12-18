@@ -45,24 +45,25 @@ First of all, this is a mono-repo which is not ideal, but the deployment is just
 This is why a multi-buildpack solution is used with `heroku-community/multi-procfile`.
 
 ```shell script
-$ heroku create stock-restapi --remote restapi
-$ heroku buildpacks:add -a stock-restapi heroku/python
-$ heroku buildpacks:add -a stock-restapi -i 1 heroku-community/multi-procfile
-$ heroku config:set -a stock-restapi PROCFILE=Procfile_restapi
-$ git push restapi master
+$ heroku create --stack heroku-20 stock-pattern-api --remote stock-pattern-api
+$ heroku buildpacks:add -a stock-pattern-api heroku/python
+$ heroku buildpacks:add -a stock-pattern-api -i 1 heroku-community/multi-procfile
+$ heroku config:set -a stock-pattern-api PROCFILE=Procfile-stock-pattern-api
+$ git push stock-pattern-api main
 $
-$ heroku create stock-dash-client --remote dash
-$ heroku buildpacks:add -a stock-dash-client heroku/python
-$ heroku buildpacks:add -a stock-dash-client -i 1 heroku-community/multi-procfile
-$ heroku config:set -a stock-dash-client PROCFILE=Procfile_dash
-$ heroku config:set -a stock-dash-client REST_API_URL=https://stock-restapi.herokuapp.com --> this is the URL where we can reach the RestAPI
-$ git push dash master
+$ heroku create --stack heroku-20 stock-pattern-web --remote stock-pattern-web
+$ heroku buildpacks:add -a stock-pattern-web heroku/python
+$ heroku buildpacks:add -a stock-pattern-web -i 1 heroku-community/multi-procfile
+$ heroku config:set -a stock-pattern-web PROCFILE=Procfile-stock-pattern-web
+# Change API URL
+$ heroku config:set -a stock-pattern-web REST_API_URL=https://stock-pattern-api.herokuapp.com/
+$ git push stock-pattern-web main
 ```
 
 Heroku Files:
 - `runtime.txt` describes the Python version
-- `Procfile_restapi` Heroku Procfile for the RestAPI app 
-- `Procfile_dash` Heroku Procfile for the Dash Client app 
+- `Procfile-stock-pattern-api` Heroku Procfile for the RestAPI app 
+- `Procfile-stock-pattern-web` Heroku Procfile for the Dash Client app 
 
 ## TODOs
 
